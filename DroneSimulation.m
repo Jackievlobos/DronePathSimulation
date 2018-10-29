@@ -1,5 +1,6 @@
 %DroneSimulation
-
+close all;
+clc;
 %% User Inputs
 beginX=input('What is your starting x? \n');
 beginY=input('What is your starting y? \n');
@@ -62,7 +63,11 @@ plot(goalX,goalY,'*r');
 
 
 %% Drone Movement
+
+
+
 for n=1:numberOfIntervals
+    
     hyp(n)=sqrt((goalX(n)-currentX(n)).^2+(goalY(n)-currentY(n)).^2);
     number=randi(length(randDists));
     randomR= randDists(number);
@@ -70,15 +75,17 @@ for n=1:numberOfIntervals
     
     number = randi(length(randAngs));
     randomAngle = randAngs(number);
-    angle=atan(goalY(n)/goalX(n))+randomAngle;
-    currentX(n+1)=currentX(n) + r(n)*cos(angle);
-    currentY(n+1)=currentY(n) + r(n)*sin(angle);
+    angle=atan((goalY(n)-currentY(n))/(goalX(n)-currentX(n)))+randomAngle;
+    currentX(n+1)=currentX(n)+r(n)*cos(angle);
+    currentY(n+1)=currentY(n)+r(n)*sin(angle);
 end 
 plot(currentX,currentY,'*g');
 plot(currentX,currentY);
 
-%% Drone Movement w/ Correction
+%% Drone Correction for Angle
 
+
+anglecorrection=-1.5*pi/10;
 for n=1:numberOfIntervals
     hyp(n)=sqrt((goalX(n)-newCurrentX(n)).^2+(goalY(n)-newCurrentY(n)).^2);
     number=randi(length(randDists));
@@ -87,10 +94,10 @@ for n=1:numberOfIntervals
     
     number = randi(length(randAngs));
     randomAngle = randAngs(number);
-    angle=atan(goalY(n)/goalX(n))+randomAngle - .15*pi;
-    newCurrentX(n+1)=newCurrentX(n) + r(n)*cos(angle);
-    newCurrentY(n+1)=newCurrentY(n) + r(n)*sin(angle);
+    angle=atan((goalY(n)-newCurrentY(n))/(goalX(n)-newCurrentX(n)))+randomAngle+anglecorrection;
+    newCurrentX(n+1)=newCurrentX(n)+r(n)*cos(angle);
+    newCurrentY(n+1)=newCurrentY(n)+r(n)*sin(angle);
 end 
-plot(newCurrentX,newCurrentY,'b--o');
+plot(newCurrentX,newCurrentY,'*c');
 plot(newCurrentX,newCurrentY);
 
