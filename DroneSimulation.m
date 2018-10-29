@@ -19,6 +19,8 @@ numberOfIntervals= input('How many intervals would you like to break the path in
 
 currentX=zeros(numberOfIntervals,1);
 currentY=zeros(numberOfIntervals,1);
+newCurrentX=zeros(numberOfIntervals,1);
+newCurrentY=zeros(numberOfIntervals,1);
 goalX=zeros(numberOfIntervals,1);
 goalY=zeros(numberOfIntervals,1);
 hyp=zeros(numberOfIntervals,1);
@@ -40,6 +42,8 @@ totalY=endY-beginY;
 
 currentX(1)=beginX;
 currentY(1)=beginY;
+newCurrentX(1)=beginX;
+newCurrentY(1)=beginY;
 
 deltaX=totalX/numberOfIntervals;
 deltaY=totalY/numberOfIntervals;
@@ -67,11 +71,26 @@ for n=1:numberOfIntervals
     number = randi(length(randAngs));
     randomAngle = randAngs(number);
     angle=atan(goalY(n)/goalX(n))+randomAngle;
-    currentX(n+1)=r(n)*cos(angle);
-    currentY(n+1)=r(n)*sin(angle);
+    currentX(n+1)=currentX(n) + r(n)*cos(angle);
+    currentY(n+1)=currentY(n) + r(n)*sin(angle);
 end 
 plot(currentX,currentY,'*g');
 plot(currentX,currentY);
 
+%% Drone Movement w/ Correction
 
+for n=1:numberOfIntervals
+    hyp(n)=sqrt((goalX(n)-newCurrentX(n)).^2+(goalY(n)-newCurrentY(n)).^2);
+    number=randi(length(randDists));
+    randomR= randDists(number);
+    r(n)=hyp(n)+randomR;
+    
+    number = randi(length(randAngs));
+    randomAngle = randAngs(number);
+    angle=atan(goalY(n)/goalX(n))+randomAngle - .15*pi;
+    newCurrentX(n+1)=newCurrentX(n) + r(n)*cos(angle);
+    newCurrentY(n+1)=newCurrentY(n) + r(n)*sin(angle);
+end 
+plot(newCurrentX,newCurrentY,'b--o');
+plot(newCurrentX,newCurrentY);
 
