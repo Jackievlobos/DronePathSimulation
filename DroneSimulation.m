@@ -1,5 +1,5 @@
 %DroneSimulation
-
+ 
 %% User Inputs
 beginX=input('What is your starting x? \n');
 beginY=input('What is your starting y? \n');
@@ -53,8 +53,10 @@ for n=1:numberOfIntervals
    goalX(n)=goalX(n-1)+deltaX;
    goalY(n)=goalY(n-1)+deltaY;
     else
-   goalX(n)=goalX(n)+deltaX;
-   goalY(n)=goalY(n)+deltaY;     
+   %goalX(n)=goalX(n)+deltaX;
+   %goalY(n)=goalY(n)+deltaY; 
+   goalX(n)=beginX +deltaX;
+   goalY(n)=beginY +deltaY;
     end
    
 end
@@ -70,7 +72,7 @@ for n=1:numberOfIntervals
     
     number = randi(length(randAngs));
     randomAngle = randAngs(number);
-    angle=atan(goalY(n)/goalX(n))+randomAngle;
+    angle=atan((goalY(n)- currentY(n))/(goalX(n)-currentX(n)))+randomAngle;
     currentX(n+1)=currentX(n) + r(n)*cos(angle);
     currentY(n+1)=currentY(n) + r(n)*sin(angle);
 end 
@@ -87,7 +89,8 @@ for n=1:numberOfIntervals
     
     number = randi(length(randAngs));
     randomAngle = randAngs(number);
-    angle=atan(goalY(n)/goalX(n))+randomAngle - .15*pi;
+    %angle=atan(goalY(n)/goalX(n))+randomAngle - .15*pi;
+    angle=atan((goalY(n)- newCurrentY(n))/(goalX(n)-newCurrentX(n)))+randomAngle - .15*pi;
     newCurrentX(n+1)=newCurrentX(n) + r(n)*cos(angle);
     newCurrentY(n+1)=newCurrentY(n) + r(n)*sin(angle);
 end 
