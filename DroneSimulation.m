@@ -72,11 +72,21 @@ for n=1:numberOfIntervals
     
     number = randi(length(randAngs));
     randomAngle = randAngs(number);
-    angle=atan((goalY(n)- currentY(n))/(goalX(n)-currentX(n)))+randomAngle;
+    
+    if(endX>0 && endY>0)
+        angle=atan((goalY(n)- currentY(n))/(goalX(n)-currentX(n)))+randomAngle;
+    elseif(endX<0 && endY>0)
+        angle=pi-atan(abs((goalY(n)- currentY(n))/(goalX(n)-currentX(n))))+randomAngle;
+    elseif(endX>0 && endY<0)
+        angle=atan((goalY(n)- currentY(n))/(goalX(n)-currentX(n)))+randomAngle;
+    elseif(endX<0 && endY<0)
+        angle=pi+atan((goalY(n)- currentY(n))/(goalX(n)-currentX(n)))+randomAngle;
+    end
+    
     currentX(n+1)=currentX(n) + r(n)*cos(angle);
     currentY(n+1)=currentY(n) + r(n)*sin(angle);
 end 
-plot(currentX,currentY,'*g');
+plot(currentX,currentY,'og');
 plot(currentX,currentY);
 
 %% Drone Movement w/ Correction
@@ -90,7 +100,18 @@ for n=1:numberOfIntervals
     number = randi(length(randAngs));
     randomAngle = randAngs(number);
     %angle=atan(goalY(n)/goalX(n))+randomAngle - .15*pi;
-    angle=atan((goalY(n)- newCurrentY(n))/(goalX(n)-newCurrentX(n)))+randomAngle - .15*pi;
+    %angle=atan((goalY(n)- newCurrentY(n))/(goalX(n)-newCurrentX(n)))+randomAngle - .15*pi;
+    
+    if(endX>0 && endY>0)
+        angle=atan((goalY(n)- newCurrentY(n))/(goalX(n)-newCurrentX(n)))+randomAngle - .15*pi;
+    elseif(endX<0 && endY>0)
+        angle=pi-atan(abs((goalY(n)- newCurrentY(n))/(goalX(n)-newCurrentX(n))))+randomAngle - .15*pi;
+    elseif(endX>0 && endY<0)
+        angle=atan((goalY(n)- newCurrentY(n))/(goalX(n)-newCurrentX(n)))+randomAngle - .15*pi;
+    elseif(endX<0 && endY<0)
+        angle=pi+atan((goalY(n)- newCurrentY(n))/(goalX(n)-newCurrentX(n)))+randomAngle - .15*pi;
+    end
+    
     newCurrentX(n+1)=newCurrentX(n) + r(n)*cos(angle);
     newCurrentY(n+1)=newCurrentY(n) + r(n)*sin(angle);
 end 
